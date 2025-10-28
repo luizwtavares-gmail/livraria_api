@@ -2,11 +2,28 @@ from fastapi import FastAPI, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 import models, schemas, database, auth
 from routers import livros, autores, categorias, editoras
+from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI(
     title="API Livraria Digital",
     version="1.0.0",
     description="CRUD completo para gestão de livros, autores, editoras e categorias. Protegido por autenticação JWT."
+)
+
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080"
+    # Adicione outros domínios conforme necessidade
+]
+
+#     allow_origins=["*"], origins
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
 )
 
 database.init_db()
